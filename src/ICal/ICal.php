@@ -2166,10 +2166,18 @@ class ICal
      */
     protected function fileOrUrl($filename)
     {
-        if (!$lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)) {
-            throw new \Exception("The file path or URL '{$filename}' does not exist.");
+        //if (!$lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)) {
+        //    throw new \Exception("The file path or URL '{$filename}' does not exist.");
+        //}
+        
+        $context = stream_context_create( $options );
+        $content = @file_get_contents( $filename, false, $context );
+        if($content === FALSE) { // An error occred, most likely a timeout
+            echo("<h1>Server-Fehler (Timeout)</h1><p>Der Churchtool-Server ist zur Zeit leider nicht erreichbar.<br>Bitte versuche es später noch einmal.<br>Dies ist ein Fehler, welcher vom Churchtool-Team behoben werden muss.</p>");
+            exit();
         }
-
+//         $lines = explode(PHP_EOL, $content); 
+        $lines = preg_split("/\\r\\n|\\r|\\n/", $content);       
         return $lines;
     }
 
