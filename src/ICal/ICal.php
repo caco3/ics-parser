@@ -2168,8 +2168,12 @@ class ICal
     {
         //if (!$lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)) {
         //    throw new \Exception("The file path or URL '{$filename}' does not exist.");
-        //}
-        
+        //}        
+        $options = array( 'http' => array(
+            'user_agent'    => 'Firefox wannabe',
+            'max_redirects' => 1,
+            'timeout'       => 5,
+        ) );
         $context = stream_context_create( $options );
         $content = @file_get_contents( $filename, false, $context );
         if($content === FALSE) { // An error occred, most likely a timeout
