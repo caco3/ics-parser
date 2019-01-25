@@ -2154,7 +2154,7 @@ class ICal
      */
     protected function isFileOrUrl($filename)
     {
-        return (file_exists($filename) || filter_var($filename, FILTER_VALIDATE_URL)) ?: false;
+        return (@file_exists($filename) || filter_var($filename, FILTER_VALIDATE_URL)) ?: false;
     }
 
     /**
